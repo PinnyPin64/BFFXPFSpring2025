@@ -1,0 +1,45 @@
+/* A way to make the page appear nice and preeetty*/
+
+#app {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+#app.fade-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+
+.tab-content {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.quiz-content {
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: all 0.5s ease-in-out;
+  padding: 0;
+}
+
+.quiz-content.visible {
+  opacity: 1;
+  transform: translateY(0);
+  max-height: 1000px; /* or whatever fits */
+}
+
+.quiz-content.hidden {
+  display: block;
+}
+
