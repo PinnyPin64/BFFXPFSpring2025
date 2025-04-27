@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Carbon Footprint Quiz</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+  <style>
+    body {
+      background-image: url('https://images.unsplash.com/photo-1561978879-84fa00184ef2?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+    }
+    #app {
+      background-color: rgba(255, 255, 255, 0.9);
+    }
+    .fade-in {
+      animation: fadeIn 0.5s;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    .feedback-correct {
+      background-color: #d1fae5;
+      border-left: 4px solid #10b981;
+      padding: 1rem;
+      margin-top: 1rem;
+      border-radius: 0.375rem;
+    }
+    .option-btn {
+      transition: all 0.2s;
+    }
+    .option-btn.selected.correct {
+      background-color: #bbf7d0;
+      border-color: #4ade80;
+    }
+    .option-btn.selected.wrong {
+      background-color: #fee2e2;
+      border-color: #ef4444;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
+  <div id="app" class="w-full max-w-xl rounded-2xl shadow-xl p-6">
+    <div id="quiz-start" class="text-center">
+      <h1 class="text-2xl font-bold mb-2">Carbon Footprint Quiz</h1>
+      <p class="mb-4 text-gray-600">How can Switching to Plant-Based Foods Reduce Your Carbon Footprint?</p>
+      <button id="start-btn" class="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition">Start Quiz</button>
+    </div>
+
+    <div id="quiz" class="hidden">
+      <div class="mb-4">
+        <div id="question-number" class="text-sm text-gray-500"></div>
+        <h2 id="question-text" class="text-xl font-semibold mb-4"></h2>
+        <div id="options" class="grid gap-3"></div>
+        <div id="feedback" class="hidden mt-4 feedback-correct">
+          <p id="feedback-text" class="text-gray-700"></p>
+        </div>
+      </div>
+
+      <div class="flex justify-between items-center mt-4">
+        <button id="prev" class="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400">Back</button>
+        <button id="next" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700">Next</button>
+      </div>
+
+      <div class="w-full h-2 bg-gray-200 rounded mt-4">
+        <div id="progress" class="h-full bg-green-500 rounded transition-all duration-300" style="width: 0%"></div>
+      </div>
+    </div>
+
+    <div id="result" class="hidden text-center">
+      <h2 id="result-title" class="text-2xl font-bold mb-2"></h2>
+      <p id="result-text" class="text-gray-700 mb-4"></p>
+      <p id="score-text" class="text-xl font-semibold mb-4"></p>
+      <img id="result-img" class="w-full max-w-sm mx-auto rounded-lg shadow-md mb-4" />
+      <button id="restart" class="bg-orange-500 text-white px-6 py-2 rounded-lg hover:bg-orange-600">Take Quiz Again</button>
+    </div>
+  </div>
+
+  <script>
+    const questions = [ //preguntas
+      {
+        text: "To kick off the quiz: How much can switching to plant-based foods reduce your carbon footprint?",
+        options: [
+          { text: "A. By 5%", score: 0 },
+          { text: "B. By 20%", score: 0},
+          { text: "C. By 10%", score: 0 },
+          { text: "D. By up to 50%", score: 1},
+        ],
+        insight: "Switching to plant-based foods can significantly reduce your carbon footprint, easing climate anxiety by contributing to a healthier planet."
+      },
+      {
+        text: "Which of These Foods Has the Lowest Greenhouse Gas Emissions?",
+        options: [
+          { text: "A. Beef", score: 0},
+          { text: "B. Lentils", score: 1},
+          { text: "C. Chicken", score: 0 },
+          { text: "D. Cheese", score: 0},
+        ],
+        insight: "Lentils have one of the lowest greenhouse gas emissions footprints, making them a sustainable choice."
+      },
+      {
+        text: "What percentage of adults are lactose intolerant?",
+        options: [
+          { text: "A. 25%", score: 0},
+          { text: "B. 65%", score: 1},
+          { text: "C. 50%", score: 0},
+          { text: "D. 40%", score: 0},
+        ],
+        insight: "With 65% of adults being lactose intolerant, plant-based milk offers a more equitable and inclusive option."
+      },
+      {
+        text: "How do plant-based diets contribute to global food equity?",
+        options: [
+          { text: "A. By reducing the need for animal feed", score: 0 },
+          { text: "B. By using fewer natural resources", score: 0},
+          { text: "C. By providing affordable nutrition", score: 0},
+          { text: "D. All of the above", score: 1},
+        ],
+        insight: "Plant-based diets help promote global food equity by requiring fewer resources and offering affordable nutrition."
+      },
+      {
+        text: "What health benefits are associated with plant-based diets?",
+        options: [
+          { text: "A. High in essential nutrients", score: 0},
+          { text: "B. Supports heart health", score: 0},
+          { text: "C. Provides a boost in energy", score: 0},
+          { text: "D. All of the above", score: 1},
+        ],
+        insight: "Plant-based diets are rich in essential nutrients, support heart health, and provide an energy boost, contributing to overall well-being."
+      },
+      {
+        text: "Which plant-based food is a great source of protein?",
+        options: [
+          { text: "A. Quinoa", score: 1},
+          { text: "B. Broccoli", score: 0},
+          { text: "C. Potatoes", score: 0},
+          { text: "D. Carrots", score: 0},
+        ],
+        insight: "Quinoa is a complete protein, providing all nine essential amino acids, making it a great addition to a plant-based diet."
+      },
+      {
+        text: "How does reducing meat consumption help combat climate change?",
+        options: [
+          { text: "A. Decreases deforestation", score: 0},
+          { text: "B. Reduces water usage", score: 0},
+          { text: "C. Lowers greenhouse gas emissions", score: 0},
+          { text: "D. All of the above", score: 1},
+        ],
+        insight: "Reducing meat consumption decreases deforestation, reduces water usage, and lowers greenhouse gas emissions, helping combat climate change."
+      },
+      {
+        text: "What sector produces the most greenhouse gas emissions in the food system?",
+        options: [
+          { text: "Plant-based agriculture", score: 0},
+          { text: "Animal agriculture", score: 1},
+          { text: "Fishing and seafood", score: 0},
+          { text: "Packaged/processed snacks", score: 0},
+        ],
+        insight: "Animal agriculture is responsible for the largest share of greenhouse gas emissions in the food system, making plant-based choices a powerful way to reduce your environmental impact."
+      },
+      {
+        text: "How can adopting a plant-based diet impact an individual's carbon footprint?",
+        options: [
+          { text: "A. It increases carbon emissions due to higher plant cultivation needs", score: 0 },
+          { text: "B. It has no significant effect on carbon emissions", score: 0},
+          { text: "C. It reduces carbon emissions by up to 73%", score: 1},
+          { text: "D. It slightly increases carbon emissions because of the transportation of plant-based products", score: 0},
+        ],
+        insight: "Research from the University of Oxford indicates that adopting a vegan diet can reduce an individual's food-related carbon footprint by up to 73%. This reduction is associated with plant-based food production compared to animal-based foods."
+      },
+      {
+        text: "What is a key reason plant-based foods have lower carbon emissions than animal products?",
+        options: [
+          { text: "A. They grow faster", score: 0},
+          { text: "B. They require fewer resources like land and water", score: 1},
+          { text: "C. They use more fertilizer", score: 0},
+          { text: "D. They need longer transportation routes", score: 0},
+        ],
+        insight: "Plant-based foods typically use much less land, water, and energy compared to animal products, resulting in much lower carbon emissions overall."
+      }
+    ];
+
+    // Quiz state
+    const state = {
+      currentQuestion: 0,
+      score: 0,
+      userAnswers: Array(questions.length).fill(null)
+    };
+
+    // DOM elements
+    const elements = {
+      startScreen: document.getElementById('quiz-start'),
+      quizScreen: document.getElementById('quiz'),
+      resultScreen: document.getElementById('result'),
+      startBtn: document.getElementById('start-btn'),
+      restartBtn: document.getElementById('restart'),
+      prevBtn: document.getElementById('prev'),
+      nextBtn: document.getElementById('next'),
+      questionNumber: document.getElementById('question-number'),
+      questionText: document.getElementById('question-text'),
+      optionsContainer: document.getElementById('options'),
+      feedbackContainer: document.getElementById('feedback'),
+      feedbackText: document.getElementById('feedback-text'),
+      progressBar: document.getElementById('progress'),
+      resultTitle: document.getElementById('result-title'),
+      resultText: document.getElementById('result-text'),
+      scoreText: document.getElementById('score-text'),
+      resultImg: document.getElementById('result-img')
+    };
+
+    // Initialize the quiz
+    function init() {
+      elements.startBtn.addEventListener('click', startQuiz);
+      elements.restartBtn.addEventListener('click', restartQuiz);
+      elements.prevBtn.addEventListener('click', prevQuestion);
+      elements.nextBtn.addEventListener('click', nextQuestion);
+    }
+
+    // Start the quiz
+    function startQuiz() {
+      elements.startScreen.classList.add('hidden');
+      elements.quizScreen.classList.remove('hidden');
+      renderQuestion();
+    }
+
+    // Restart the quiz
+    function restartQuiz() {
+      state.currentQuestion = 0;
+      state.score = 0;
+      state.userAnswers.fill(null);
+      
+      elements.resultScreen.classList.add('hidden');
+      elements.quizScreen.classList.remove('hidden');
+      elements.feedbackContainer.classList.add('hidden');
+      
+      renderQuestion();
+    }
+
+    // Render the current question
+    function renderQuestion() {
+      const question = questions[state.currentQuestion];
+      
+      // Update question info - yuh
+      elements.questionNumber.textContent = `Question ${state.currentQuestion + 1} of ${questions.length}`;
+      elements.questionText.textContent = question.text;
+      
+      // Clear previous options
+      elements.optionsContainer.innerHTML = '';
+      
+      // Create option buttons
+      question.options.forEach((option, index) => {
+        const button = document.createElement('button');
+        button.className = `option-btn w-full p-3 rounded-lg text-left border bg-gray-100 border-gray-300 hover:bg-green-100`;
+        
+        // Highlight selected answer if exists
+        if (state.userAnswers[state.currentQuestion] === index) {
+          const isCorrect = question.options[index].score === 1;
+          button.classList.add('selected', isCorrect ? 'correct' : 'wrong');
+        }
+        
+        button.textContent = option.text;
+        button.addEventListener('click', () => selectAnswer(index));
+        elements.optionsContainer.appendChild(button);
+      });
+      
+      // Update navigation buttons
+      elements.prevBtn.style.display = state.currentQuestion === 0 ? 'none' : 'inline-block';
+      elements.nextBtn.textContent = state.currentQuestion === questions.length - 1 ? 'See Results' : 'Next';
+      
+      // Update progress bar
+      elements.progressBar.style.width = `${((state.currentQuestion) / questions.length) * 100}%`;
+      
+      // Show feedback only if the selected answer was correct
+      if (state.userAnswers[state.currentQuestion] !== null) {
+        const selectedOption = question.options[state.userAnswers[state.currentQuestion]];
+        if (selectedOption.score === 1) {
+          elements.feedbackText.textContent = question.insight;
+          elements.feedbackContainer.classList.remove('hidden');
+        } else {
+          elements.feedbackContainer.classList.add('hidden');
+        }
+      } else {
+        elements.feedbackContainer.classList.add('hidden');
+      }
+    }
+
+    // Handle answer selection --------- HAAAAAAAAAA IM TIRED
+    function selectAnswer(answerIndex) {
+      const question = questions[state.currentQuestion];
+      const isCorrect = question.options[answerIndex].score === 1;
+      
+      // Mark the question as answered
+      state.userAnswers[state.currentQuestion] = answerIndex;
+      
+      // Update the selected option visually
+      const optionButtons = elements.optionsContainer.querySelectorAll('.option-btn');
+      optionButtons.forEach((button, index) => {
+        button.classList.remove('selected', 'correct', 'wrong');
+        if (index === answerIndex) {
+          button.classList.add('selected', isCorrect ? 'correct' : 'wrong');
+        }
+      });
+      
+      // Show feedback and update score if correct
+      if (isCorrect) {
+        state.score++;
+        elements.feedbackText.textContent = question.insight;
+        elements.feedbackContainer.classList.remove('hidden');
+      } else {
+        elements.feedbackContainer.classList.add('hidden');
+      }
+    }
+
+    // Navigate to previous question
+    function prevQuestion() {
+      if (state.currentQuestion > 0) {
+        state.currentQuestion--;
+        renderQuestion();
+      }
+    }
+
+    // Navigate to next question or show results
+    function nextQuestion() {
+      // Require an answer before proceeding
+      if (state.userAnswers[state.currentQuestion] === null) {
+        alert('Please select an answer before proceeding.');
+        return;
+      }
+      
+      if (state.currentQuestion < questions.length - 1) {
+        state.currentQuestion++;
+        renderQuestion();
+      } else {
+        showResults();
+      }
+    }
+
+    // Show the final results
+    function showResults() {
+      elements.quizScreen.classList.add('hidden');
+      elements.resultScreen.classList.remove('hidden');
+      
+      // Calculate percentage score
+      const percentage = Math.round((state.score / questions.length) * 100);
+      
+      // Set result content based on score
+      elements.scoreText.textContent = `We helped a little bit, but you scored ${state.score} out of ${questions.length} (${percentage}%)`;
+      
+      if (percentage >= 90) {
+        elements.resultTitle.textContent = 'Excellent! You know your stuff!';
+        elements.resultText.textContent = 'You have a deep understanding of how plant-based diets help the planet.';
+        elements.resultImg.src = 'https://images.unsplash.com/photo-1505576399279-565b52d4ac71?w=600&auto=format';
+      } else if (percentage >= 70) {
+        elements.resultTitle.textContent = 'Great job!';
+        elements.resultText.textContent = 'You understand the benefits of plant-based diets well.';
+        elements.resultImg.src = 'https://images.unsplash.com/photo-1543351611-58f69d7c1781?w=600&auto=format';
+      } else if (percentage >= 50) {
+        elements.resultTitle.textContent = 'Good effort!';
+        elements.resultText.textContent = 'You know some benefits of plant-based diets - keep learning!';
+        elements.resultImg.src = 'https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=600&auto=format';
+      } else {
+        elements.resultTitle.textContent = 'Keep learning!';
+        elements.resultText.textContent = 'Explore more about how plant-based diets can help the environment.';
+        elements.resultImg.src = 'https://images.unsplash.com/photo-1466637574441-749b8f19452f?w=600&auto=format';
+      }
+      
+      // Update progress bar to 100%
+      elements.progressBar.style.width = '100%';
+    }
+
+   
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('app').classList.add('fade-in');
+      init();
+    });
+  </script>
+</body>
+</html>

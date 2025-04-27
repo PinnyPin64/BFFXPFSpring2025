@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resource List</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'leaf': '#5E8C61',
+                        'sage': '#8A9B68',
+                        'moss': '#4A5D45',
+                        'earth': '#6B4D3D',
+                        'sunlight': '#F2E6B1',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Open+Sans:wght@300;400&display=swap');
+        
+        body {
+            font-family: Lato, sans-serif; 
+            background-color: #60ad5e;
+            background-image: url('https://images.unsplash.com/photo-1623428187969-5da2dcea5ebf?q=80&w=928&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+           /* background-blend-mode: overlay;*/
+        }
+        
+        h1, h2, h3 {
+            font-family:Lato, sans-serif ;
+        }
+        
+        .leaf-bg {
+            background-color: rgba(94, 140, 97, 0.9);
+        }
+        
+        .grow-in {
+            animation: growIn 0.8s ease-out forwards;
+            transform-origin: bottom;
+            opacity: 0;
+        }
+        
+        @keyframes growIn {
+            0% {
+                opacity: 0;
+                transform: translateY(20px) scaleY(0.8);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scaleY(1);
+            }
+        }
+        
+        .float-in {
+            animation: floatIn 1s ease-out forwards;
+            opacity: 0;
+        }
+        
+        @keyframes floatIn {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .leaf-item {
+            transition: all 0.3s ease;
+            background-color: rgba(255, 255, 255, 0.85);
+            border-left: 4px solid #5E8C61;
+        }
+        
+        .leaf-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 15px rgba(94, 140, 97, 0.2);
+            background-color: white;
+        }
+        
+        .nature-card {
+            background-color: rgba(255, 255, 255, 0.85);
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(74, 93, 69, 0.1);
+            backdrop-filter: blur(2px);
+            border: 1px solid rgba(138, 155, 104, 0.2);
+        }
+        
+        .watermark {
+            position: absolute;
+            opacity: 0.03;
+            font-size: 20rem;
+            z-index: 0;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header class="leaf-bg text-white py-8 text-center shadow-lg float-in">
+        <div class="container mx-auto px-6">
+            <h1 class="text-4xl font-bold mb-2"> Resource | Our Resource List </h1>
+            <p class="text-white opacity-100"> Explore these resources for insights, tips, and real-world examples</p>
+        </div>
+    </header>
+
+    <div class="container mx-auto p-6 max-w-4xl relative">
+        <div class="watermark font-serif left-0 top-0">🌱</div>
+        
+        <!-- Outside Resources Section -->
+        <section class="nature-card p-8 mb-12 grow-in" style="animation-delay: 0.2s">
+            <h2 class="text-2xl font-bold text-moss border-b-2 border-sage pb-3 mb-6"> Resource | Guides & Outreach </h2>
+            <ul class="space-y-4">
+                <li class="leaf-item p-4 rounded-lg float-in" style="animation-delay: 0.4s">
+                    <a href="downstate_eating.pdf" class="text-leaf hover:text-moss font-medium text-lg" target="_blank">🌿 - Informative Guide towards Shifting to a Plant-Based Diet</a>
+                    <p class="text-earth mt-2">Tips, advice, and other information on plant-based foods and health.</p>
+                </li>
+                <li class="leaf-item p-4 rounded-lg float-in" style="animation-delay: 0.5s">
+                    <a href="Default-Veg-Resource-Guide.pdf" class="text-leaf hover:text-moss font-medium text-lg" target="_blank"> 📖 - DefaultVeg Guide </a>
+                    <p class="text-earth mt-2"> DefaultVeg Guide: How DefaultVeg helps
+                    achieve sustainability goals, reduce catering costs,
+                    and serve more inclusive meals.</p>
+                </li>
+                <li class="leaf-item p-4 rounded-lg float-in" style="animation-delay: 0.6s">
+                    <a href="https://www.loveandlemons.com/plant-based-recipes/" class="text-leaf hover:text-moss font-medium text-lg" target="_blank">🍲 - Plant-Based Recipes</a>
+                    <p class="text-earth mt-2">Easy recipes for various plant-based meals, perfect for beginners.</p>
+                </li>
+                <li class="leaf-item p-4 rounded-lg float-in" style="animation-delay: 0.7s">
+                    <a href="https://www.youtube.com/watch?v=pJhJoPB2iV0" class="text-leaf hover:text-moss font-medium text-lg" target="_blank">🎤 - TedTalk on Switching to Plant-Based Defaults</a>
+                    <p class="text-earth mt-2">Discussion on the results of switching to plant-based foods.</p>
+                </li>
+                <li class="leaf-item p-4 rounded-lg float-in" style="animation-delay: 0.8s">
+                    <a href="https://www.youtube.com/watch?v=tVhQw-tIZ6k" class="text-leaf hover:text-moss font-medium text-lg" target="_blank">📢 - How to Run an Effective Campaign</a>
+                    <p class="text-earth mt-2">Learn how to spread awareness about plant-based meals.</p>
+                </li>
+            </ul>
+        </section>
+
+        <!-- Resources From BFF Website Section -->
+        <section class="nature-card p-8 grow-in" style="animation-delay: 0.3s">
+            <h2 class="text-2xl font-bold text-moss border-b-2 border-sage pb-3 mb-6"> Resources | Better Food Foundation </h2>
+            <ul class="space-y-4">
+                <li class="leaf-item p-4 rounded-lg float-in" style="animation-delay: 0.5s">
+                    <a href="https://www.betterfoodfoundation.org/wp-content/uploads/2024/12/What-is-PBD-5-Strategies-Resource-Page-2025.pdf" class="text-leaf hover:text-moss font-medium text-lg" target="_blank">📘 - What is PBD? 5 Strategies</a>
+                    <p class="text-earth mt-2">Explains plant-based by default and strategies for implementation.</p>
+                </li>
+                <li class="leaf-item p-4 rounded-lg float-in" style="animation-delay: 0.6s">
+                    <a href="https://www.betterfoodfoundation.org/wp-content/uploads/2024/11/2025-Oat-Milk-by-Default-2-Pager-Guide.pdf" class="text-leaf hover:text-moss font-medium text-lg" target="_blank">🥛 - Oat Milk by Default</a>
+                    <p class="text-earth mt-2">Benefits of oat milk in coffee-serving companies.</p>
+                </li>
+                <li class="leaf-item p-4 rounded-lg float-in" style="animation-delay: 0.7s">
+                    <a href="https://www.betterfoodfoundation.org/wp-content/uploads/2024/09/Say-ThisNot-That_2025.png" class="text-leaf hover:text-moss font-medium text-lg" target="_blank">💬 - Say This, Not That</a>
+                    <p class="text-earth mt-2">Language use for making plant-based foods more appealing.</p>
+                </li>
+                <li class="leaf-item p-4 rounded-lg float-in" style="animation-delay: 0.8s">
+                    <a href="https://www.betterfoodfoundation.org/wp-content/uploads/2024/06/Flip-your-schools-food-with-DefaultVeg.pdf" class="text-leaf hover:text-moss font-medium text-lg" target="_blank">🏫 - Flip Your School's Food with DefaultVeg</a>
+                    <p class="text-earth mt-2">Guide for bringing sustainability to campus dining.</p>
+                </li>
+                <li class="leaf-item p-4 rounded-lg float-in" style="animation-delay: 0.9s">
+                    <a href="https://www.betterfoodfoundation.org/wp-content/uploads/2024/10/DefaultVeg-Ambassador-Internship-Program-2025.pdf" class="text-leaf hover:text-moss font-medium text-lg" target="_blank">👩‍🌾 - DefaultVeg Ambassador Internship Program</a>
+                    <p class="text-earth mt-2">Internship for sustainable food systems education.</p>
+                </li>
+            </ul>
+        </section>
+
+    </div>
+
+    <footer class="leaf-bg text-sunlight text-center py-6 mt-12 text-sm">
+        <div class="container mx-auto">
+            <p>&copy; 2025 Made by DefaultVeg Ambassadors with the Better Food Foundation. </p>
+        </div>
+    </footer>
+</body>
+</html>
